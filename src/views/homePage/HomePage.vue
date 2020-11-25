@@ -329,7 +329,6 @@
       position: absolute;
       top: 0;
       right: 0;
-
       p {
         text-align: center;
         color: #fff;
