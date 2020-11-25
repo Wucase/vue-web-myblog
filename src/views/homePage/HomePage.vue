@@ -338,7 +338,6 @@
         line-height: 45px;
         color: #6bc30d;
       }
-
       .year {
         font-size: 20px;
         line-height: 27px;
