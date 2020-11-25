@@ -344,7 +344,7 @@
       .year {
         font-size: 20px;
         line-height: 27px;
-        color: #989997;
+        color: #989999;
 
         span {
           display: inline-block;
