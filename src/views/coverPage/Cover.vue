@@ -17,7 +17,7 @@
 
     </div>
     <div class="home-main-bottom">
-      <div class="animated zoomIn managerInfo" style="animation-duration: 2s;" v-if="isManagerInfo">
+      <div class="animated zoomIn managerInfo" style="animation-duration: 1.9s;" v-if="isManagerInfo">
         <ShiMask :shiData="shiData"></ShiMask>
       </div>
       <div class="drawDowm">
