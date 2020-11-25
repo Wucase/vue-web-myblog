@@ -334,7 +334,6 @@
         text-align: center;
         color: #fff;
       }
-
       .day {
         font-size: 40px;
         line-height: 45px;
