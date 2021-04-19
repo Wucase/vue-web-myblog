@@ -35,7 +35,7 @@
       <AboutMe></AboutMe>
     </div>
     <div class="bg"></div>
-  
+
   </div>
 </template>
 
@@ -57,7 +57,7 @@
     data() {
       return {
         showMenu: false,
-        
+
         dialogVisible: false,
         animateIn: false,
         isManagerInfo: false,
@@ -65,18 +65,16 @@
         infoTitle,
         btnOptions: [
           { label: "首页", path: "/" },
-          { label: "博客", path: "/home" },
-          { label: "留言", path: "/home" }
+          { label: "博客", path: "/blog/myblog" },
+          { label: "留言", path: "/blog/message" }
         ]
       }
     },
-    created(){
-      console.log("loading,,,,,,,,,,,,,,,,,,,,,,,");
+    created() {
       this.$loading.show()
-     
+
     },
     mounted() {
-      console.log("hide-----------");
       setTimeout(() => {
         this.$loading.hide()
       }, 3000)
@@ -92,23 +90,26 @@
       showMenuClick() {
         this.showMenu = !this.showMenu
       },
-    
+
     }
   }
 </script>
 <style lang="scss" scoped>
   .home {
     width: 100%;
-    height: 100%;
+    height: 100% !important;
     min-height: 500px !important;
+    min-width: 1100px;
     background: url("~@/assets/img/earthBg.jpg") no-repeat;
     background-size: cover;
+
     .home-main-header {
       width: 100%;
       height: 100px !important;
       position: relative;
       top: 0;
       left: 0;
+
       span {
         z-index: 999;
         display: inline-block;
@@ -201,7 +202,7 @@
     height: 850px;
     background-color: #fff;
 
-   
+
 
   }
 
@@ -267,15 +268,17 @@
       transform: rotate(360deg);
     }
   }
-  .aboutMe{
+
+  .aboutMe {
     width: 100%;
     height: 100%;
     /* background-color: blue; */
-    
-    
+
+
     /* background:url(https://yssimage.oss-cn-hangzhou.aliyuncs.com/22.jpg); */
   }
-  .bg{
+
+  .bg {
     width: 100%;
     height: 100%;
     position: fixed;

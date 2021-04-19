@@ -21,6 +21,9 @@ export default {
       },
       setUserIdAction(context,id){
         context.commit('setUserId', id)
+      },
+      resetUserAction(context){
+        context.commit('resetUser')
       }
     },
     //  操控 state 里面的数据的   methods
@@ -33,6 +36,13 @@ export default {
         },
         setUserId(state, id){
             state.userId = id
+        },
+        resetUser(state){
+            console.log("reset---------");
+            state.userId = ''
+            state.token = ''
+            state.user = {}
+
         },
    
     },
