@@ -1,9 +1,8 @@
-import HomePage from "@/views/homePage/HomePage"
 
 const homePageRouter = [
   {
     path: '/home',
-    component: HomePage
+    component: () => import("@/views/homePage/HomePage")
   },
 ]
 

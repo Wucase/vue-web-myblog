@@ -1,10 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Cover from '../views/coverPage/Cover.vue'
-import Login from '../views/login/Login.vue'
-import Register from '../views/register/Register.vue'
-import Blog from '../views/blog/Blog.vue'
-
 import BlogRouters from './blogRouters/blogRouters';
 
 const originalPush = VueRouter.prototype.push;
@@ -16,19 +11,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: Cover
+    component: () => import("@/views/coverPage/Cover.vue")
   },
   {
     path: '/login',
-    component: Login
+    component: () => import("@/views/login/Login.vue")
   },
   {
     path: '/register',
-    component: Register
+    component: () => import("@/views/register/Register.vue")
   },
   {
     path: '/blog',
-    component: Blog,
+    component: () => import("@/views/blog/Blog.vue"),
     children:[
       ...BlogRouters
     ],

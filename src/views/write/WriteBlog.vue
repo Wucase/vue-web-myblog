@@ -1,163 +1,113 @@
 <template>
-  <el-card class="animated zoomIn" v-if="isShowPage">
+  <el-card class="animated zoomIn artDetail"
+    v-if="isShowPage">
     <div class="writeTitle">
       <img src="@/assets/img/writeBlog.png" alt="" />
     </div>
     <div class="writeForm">
-      <el-form
-        :model="writeForm"
-        :rules="writeFormRules"
-        ref="writeFormRef"
-        label-width="100px"
-        class="demo-ruleForm"
-        :auto-upload="false"
-      >
-        <el-form-item label="blog标题" prop="blogTitle">
-          <el-input v-model="writeForm.blogTitle"></el-input>
+      <el-form :model="writeForm"
+        :rules="writeFormRules" ref="writeFormRef"
+        label-width="100px" class="demo-ruleForm"
+        :auto-upload="false">
+        <el-form-item label="标题" prop="blogTitle">
+          <el-input v-model="writeForm.blogTitle">
+          </el-input>
         </el-form-item>
-        <el-form-item label="blog图片" prop="blogImg" class="blogImg">
+        <el-form-item label="封面图片" prop="blogImg"
+          class="blogImg">
           <div class="block" v-if="imgUrl">
-            <img
-              :src="$getImage(imgUrl)"
-              alt="no"
-              style="width: 100px;height: 100px;"
-            />
+            <img :src="imgUrl" alt="no"
+              style="width: 100px;height: 100px;" />
           </div>
 
           <el-upload
-            class="upload-demo"
-            action
-            multiple
-            :show-file-list="false"
-            :http-request="(data) => handleAvatarSuccess(data, fileList)"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
+            :class="{upLoadBtn:true,upBtn:imgUrl}"
+            action multiple :show-file-list="false"
+            :http-request="(data) => handleAvatarSuccess(data, fileList)">
+            <el-button size="small" type="primary">点击上传
+            </el-button>
             <div slot="tip" class="el-upload__tip">
               只能上传jpg文件，且不超过2M
             </div>
           </el-upload>
-          <!-- <el-upload
-            action
-            list-type="picture-card"
-            :auto-upload="false"
-            :on-change="imgChange"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :http-request="(data) => handleAvatarSuccess(data, fileList)"
-            :limit="1"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
-          <el-dialog :visible.sync="dialogVisible" :append-to-body="true">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog> -->
         </el-form-item>
-        <el-form-item label="blog" class="blogArt" prop="blogContent">
-          <div class="msg-input">
-            <tinymce-editor
-              msgHeight="400px"
-              ref="editor"
-              v-model="writeForm.blogContent"
-              :value="writeForm.blogContent"
-              @input="inputContent"
-            >
-            </tinymce-editor>
-          </div>
-        </el-form-item>
-
-        <el-form-item label="blog分类" prop="blogType" class="blogTy">
+        <el-form-item label="blog分类" prop="blogType"
+          class="blogTy">
           <div class="checkClass">
-            <el-checkbox-group v-model="writeForm.blogType">
-              <el-checkbox
-                :label="value"
-                :name="value"
+            <el-checkbox-group
+              v-model="writeForm.blogType">
+              <el-checkbox :label="value" :name="value"
                 v-for="(value, key) in writeForm.blogType"
-                :key="key"
-              ></el-checkbox>
+                :key="key"></el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="addClass">
-            <el-tag
-              size="small"
-              :key="tag"
-              v-for="tag in dynamicTagsType"
-              closable
+            <el-tag size="small" :key="tag"
+              v-for="tag in dynamicTagsType" closable
               :disable-transitions="false"
-              @close="handleClose(tag, 'type')"
-            >
+              @close="handleClose(tag, 'type')">
               {{ tag }}
             </el-tag>
-            <el-input
-              class="input-new-tag"
+            <el-input class="input-new-tag"
               v-if="inputVisibleType"
               v-model="inputValueType"
-              ref="saveTagInputType"
-              size="small"
+              ref="saveTagInputType" size="small"
               @keyup.enter.native="handleInputConfirm('type')"
-              @blur="handleInputConfirm('type')"
-            >
+              @blur="handleInputConfirm('type')">
             </el-input>
-            <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showInput('type')"
-              >+ New Type</el-button
-            >
+            <el-button v-else class="button-new-tag"
+              size="small" @click="showInput('type')">+
+              New Type</el-button>
           </div>
         </el-form-item>
 
-        <el-form-item label="blog标签" prop="blogTip" class="blogTy">
+        <el-form-item label="blog标签" prop="blogTip"
+          class="blogTy">
           <div class="checkClass">
-            <el-checkbox-group v-model="writeForm.blogTip">
-              <el-checkbox
-                :label="value"
-                :name="value"
+            <el-checkbox-group
+              v-model="writeForm.blogTip">
+              <el-checkbox :label="value" :name="value"
                 v-for="(value, key) in writeForm.blogTip"
-                :key="key"
-              ></el-checkbox>
+                :key="key"></el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="addClass">
-            <el-tag
-              size="small"
-              :key="tag"
-              v-for="tag in dynamicTagsTip"
-              closable
+            <el-tag size="small" :key="tag"
+              v-for="tag in dynamicTagsTip" closable
               :disable-transitions="false"
-              @close="handleClose(tag)"
-            >
+              @close="handleClose(tag)">
               {{ tag }}
             </el-tag>
-            <el-input
-              class="input-new-tag"
+            <el-input class="input-new-tag"
               v-if="inputVisibleTip"
               v-model="inputValueTip"
-              ref="saveTagInputTip"
-              size="small"
+              ref="saveTagInputTip" size="small"
               @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            >
+              @blur="handleInputConfirm">
             </el-input>
-            <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showInput"
-              >+ New Tip</el-button
-            >
+            <el-button v-else class="button-new-tag"
+              size="small" @click="showInput">+ New Tip
+            </el-button>
           </div>
         </el-form-item>
-        <el-form-item style="margin-top:25px;">
-          <el-button type="primary" @click="submitBlog" :loading="btnLoading"
-            >发 表</el-button
-          >
-          <el-button type="primary" @click="resetForm">重 写</el-button>
+        <el-form-item label="blog" class="blogArt"
+          prop="blogContent">
+          <div class="msg-input">
+            <mavon-editor
+              v-model="writeForm.blogContent" ref=md
+              :toolbarsBackground="'#f9f9f9'"
+              @imgAdd="$imgAdd" @imgDel="$imgDel" />
+            <div class="clearF"></div>
+          </div>
         </el-form-item>
+
       </el-form>
+    </div>
+    <div class="submitBtns">
+      <el-button type="primary" @click="submitBlog"
+        :loading="btnLoading">发 表</el-button>
+      <el-button type="primary" @click="resetForm">
+        重 写</el-button>
     </div>
   </el-card>
 </template>
@@ -170,13 +120,59 @@ import {
   updateArticalById,
 } from "@/api/artical/artical";
 import tinymceEditor from "@/components/tinymce/editor.vue";
+import axios from "axios";
+
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
 export default {
   name: "writeBlog",
   components: {
     tinymceEditor,
+    mavonEditor,
   },
   data() {
     return {
+      code_style: {
+        scrollStyle: true,
+      },
+      //参数
+      toolbars: {
+        bold: true, // 粗体
+
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        strikethrough: true, // 中划线
+        mark: true, // 标记
+        superscript: true, // 上角标
+        subscript: true, // 下角标
+        quote: true, // 引用
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: true, // code
+        table: true, // 表格
+        fullscreen: false, // 全屏编辑
+        readmodel: false, // 沉浸式阅读
+        htmlcode: true, // 展示html源码
+        help: true, // 帮助
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        save: false, // 保存（触发events中的save事件）
+        /* 1.4.2 */
+        navigation: true, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        subfield: true, // 单双栏模式
+        preview: false, // 预览
+      },
+      value: "",
       btnLoading: false,
       dynamicTagsType: [],
       dynamicTagsTip: [],
@@ -217,7 +213,13 @@ export default {
           { required: true, message: "请填写文章内容", trigger: "blur" },
         ],
       },
+      img_file: {},
     };
+  },
+  watch: {
+    value(val) {
+      console.log(val);
+    },
   },
   created() {
     console.log(this.$route.query);
@@ -250,6 +252,26 @@ export default {
   },
   mounted() {},
   methods: {
+    $imgAdd(pos, $file) {
+      console.log("============");
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData();
+      formdata.append("multipartFile", $file);
+      this.img_file[pos] = $file;
+      axios({
+        url: "/fileUpload",
+        method: "post",
+        data: formdata,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        let _res = res.data;
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        this.$refs.md.$img2Url(pos, _res.avatar_url);
+      });
+    },
+    $imgDel(pos) {
+      delete this.img_file[pos];
+    },
     handleClose(tag, type) {
       console.log(tag, type);
       if (type === "type")
@@ -410,7 +432,58 @@ export default {
     height: 80px;
   }
 }
+.upBtn /deep/ .el-upload .el-button {
+  &:before {
+    display: none !important;
+  }
+  &:after {
+    display: none !important;
+  }
+}
 
+.upLoadBtn /deep/ .el-upload .el-button {
+  display: inline-block;
+  height: 100px !important;
+  width: 100px !important;
+  background-color: rgba(0, 0, 0, 0);
+  position: relative;
+  top: 0;
+  left: 0;
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 70%;
+    height: 3px;
+    background-color: #eee;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    &:hover {
+      display: inline-block;
+    }
+  }
+  &:after {
+    content: "";
+    width: 3px;
+    display: inline-block;
+    height: 70%;
+    background-color: #eee;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%);
+    &:hover {
+      display: inline-block;
+    }
+  }
+}
+// .upLoadBtn /deep/ .el-upload .el-button ::before {
+//   content: "";
+//   width: 100%;
+//   height: 5px;
+//   background-color: #eee;
+// }
 .writeForm {
   width: 90%;
   margin: 15px 0;
@@ -421,15 +494,37 @@ export default {
   }
 
   .blogImg {
+    position: relative;
+    top: 0;
+    left: 0;
+    .upBtn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: auto;
+    }
+
+    .block {
+      height: 130px;
+    }
     margin-top: 30px;
-    height: 140px;
+    height: 130px;
   }
 }
 
-.blogArt,
+.blogArt {
+  height: 300px !important;
+  height: auto;
+}
 .msg-input {
-  margin-top: 10px;
-  height: 400px !important;
+  // clear: both;
+  overflow: hidden;
+
+  height: 300px !important;
+
+  .clearF {
+    clear: both;
+  }
 }
 
 .el-dialog {
@@ -448,7 +543,6 @@ export default {
 }
 .input-new-tag {
   width: 90px;
-  margin-left: 10px;
   vertical-align: bottom;
 }
 .addClass /deep/ .button-new-tag {
@@ -470,5 +564,15 @@ export default {
 }
 .blogTy .el-checkbox:nth-last-of-type(1) {
   margin-right: 30px !important;
+}
+.submitBtns {
+  text-align: center;
+  clear: both;
+}
+.artDetail /deep/ .el-card__body {
+  &:before {
+    content: "";
+    clear: both;
+  }
 }
 </style>

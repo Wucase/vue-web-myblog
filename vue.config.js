@@ -65,7 +65,8 @@ module.exports = {
     proxy: {
       "/api": {
         // target: "http://192.168.0.109:8090/", //目标接口域名
-        target: "http://121.37.130.135/:8090", //目标接口域名
+        target: "http://127.0.0.1/:8090", //目标接口域名
+        // target: "http://1.14.157.140/:8090", //目标接口域名
         secure: false, //false为http访问，true为https访问
         changeOrigin: true, //是否跨域
         pathRewrite: {

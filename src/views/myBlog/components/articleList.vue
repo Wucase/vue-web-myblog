@@ -1,79 +1,64 @@
 <template>
   <ul class="blogUl">
     <template v-if="articalBI">
-      <el-card
-        v-if="isDataList"
+      <el-card v-if="isDataList"
         class="box-card animated nodata"
-        :class="{ zoomIn: articalBI }"
-      >
+        :class="{ zoomIn: articalBI }">
         <img src="@/assets/img/null.jpg" alt="" />
         <div>
-          <el-link type="info" :underline="false" @click="toWrite"
-            >去找点乐子...</el-link
-          >
+          <el-link type="info" :underline="false"
+            @click="toWrite">去找点乐子...</el-link>
         </div>
       </el-card>
-      <el-card
-        v-else
-        class="box-card animated"
-        v-for="item in artList"
-        :key="item._id"
-        :class="{ zoomIn: articalBI }"
-      >
+      <el-card v-else class="box-card animated"
+        v-for="item in artList" :key="item._id"
+        :class="{ zoomIn: articalBI }">
         <li>
           <div class="flag">HOT</div>
           <div class="artical-header">
             <div class="left">
               【原创】
-              <el-link
-                @click="toDetail(item)"
-                :underline="false"
-                type="primary"
-                >{{ item.articalTitle }}</el-link
-              >
+              <el-link @click="toDetail(item)"
+                :underline="false" type="primary">
+                {{ item.articalTitle }}</el-link>
             </div>
             <div class="right">
               <p class="day">{{ item.day }}</p>
-              <p class="year">{{ item.month }}月<span></span>{{ item.year }}</p>
+              <p class="year">
+                {{ item.month }}月<span></span>{{ item.year }}
+              </p>
             </div>
           </div>
           <div class="artical-main">
             <el-row>
               <el-col :span="10">
-                <img
-                  :src="$getImage(item.articalImgs)"
-                  alt=""
-                  @click="toDetail(item)"
-                />
+                <img :src="$getImage(item.articalImgs)"
+                  alt="" @click="toDetail(item)" />
               </el-col>
               <el-col :span="14">
                 <h2
-                  style="text-align: center;line-height:30px;font-size: 22px;color: #6bc30d;"
-                >
+                  style="text-align: center;line-height:30px;font-size: 22px;color: #6bc30d;">
                   {{ item.articalTitle }}
                 </h2>
-                <div class="articalContent" v-html="item.articalContent"></div>
+                <div class="articalContent"
+                  v-html="item.articalContent"></div>
               </el-col>
             </el-row>
           </div>
           <div class="continuRead">
-            <el-link :underline="false" type="primary" @click="toDetail(item)"
-              >继续悦读</el-link
-            >
+            <el-link :underline="false" type="primary"
+              @click="toDetail(item)">继续悦读</el-link>
           </div>
           <div class="artInfo">
             <div class="writeMsg">
-              <span class="iconfont icon-shuxie" @click="toDetail(item)"
-                >留言</span
-              >
+              <span class="iconfont icon-shuxie"
+                @click="toDetail(item)">留言</span>
             </div>
             <div class="tourCount">
-              <span class="iconfont icon-yan"
-                ><span>{{ item.articalVisit }}</span></span
-              >
-              <span class="iconfont icon-fenxiang"
-                ><span>{{ item.articalShare }}</span></span
-              >
+              <span
+                class="iconfont icon-yan"><span>{{ item.articalVisit }}</span></span>
+              <span
+                class="iconfont icon-fenxiang"><span>{{ item.articalShare }}</span></span>
             </div>
           </div>
         </li>

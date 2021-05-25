@@ -10,7 +10,8 @@ axios.defaults.timeout = 6000; // 请求超时时间
  * process.env.NODE_ENV==='development' (开发环境)
  */
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://121.37.130.135:3030/api':"http://127.0.0.1:3030/api";
+axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://1.14.157.140:3030/api':"http://127.0.0.1:3030/api";
+// axios.defaults.baseURL = process.env.NODE_ENV === 'production'?'http://1.14.157.140:3030/api':"http://1.14.157.140:3030/api";
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded;charset=UTF-8"; // post请求头的设置
 //设置跨域访问

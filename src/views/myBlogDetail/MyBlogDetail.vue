@@ -1,44 +1,50 @@
 <template>
-  <div>
-    <el-card class="animated zoomIn box-card titleCard">
+  <div class="ArtDetail">
+    <el-card
+      class="animated zoomIn box-card titleCard">
       <el-row class="detail-title">
         <el-col :span="12">
           <div class="title">
             {{ articalInfo.articalTitle }}
           </div>
           <div class="author">
-            作者：<el-link type="primary" :underline="false">{{
+            作者：<el-link type="primary"
+              :underline="false">{{
               articalInfo.articalAuthor
-            }}</el-link
-            ><span> 更新于 {{ $timeService(articalInfo.articalDate) }}</span>
+            }}</el-link><span> 更新于
+              {{ $timeService(articalInfo.articalDate) }}</span>
           </div>
         </el-col>
         <el-col :span="12" class="time">
           <div>
-            <div class="day">{{ articalInfo.day }}</div>
+            <div class="day">{{ articalInfo.day }}
+            </div>
             <div>
-              <span class="month">{{ articalInfo.month }}</span>
-              <span class="year">{{ articalInfo.year }}</span>
+              <span
+                class="month">{{ articalInfo.month }}</span>
+              <span
+                class="year">{{ articalInfo.year }}</span>
             </div>
           </div>
         </el-col>
       </el-row>
     </el-card>
-    <div class="dividerList animated zoomIn">
+    <!-- <div class="dividerList animated zoomIn">
       <el-row :gutter="20">
-        <el-col :span="1" v-for="item in 24" :key="item">
-          <div
-            :class="{ active: item == activeIndex }"
-            class="grid-content bg-purple"
-          ></div>
+        <el-col :span="1" v-for="item in 24"
+          :key="item">
+          <div :class="{ active: item == activeIndex }"
+            class="grid-content bg-purple"></div>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
     <!-- 文章主体 -->
     <el-card
-      class="animated zoomIn box-card articalCard"
-      v-html="articalInfo.articalContent"
-    >
+      class="animated zoomIn box-card articalCard">
+      <div id="content"
+        v-html="articalInfo.articalContent">
+
+      </div>
     </el-card>
 
     <!-- 版权 -->
@@ -50,64 +56,50 @@
             articalInfo.articalAuthor
           }}</el-link>
           所有，转载请注明出处.<br />
-          本文标题： <span style="color: #6bc30d;"> 路由懒加载</span><br />
+          本文标题： <span style="color: #6bc30d;">
+            路由懒加载</span><br />
           本文网址：
-          <el-link type="primary" :underline="false"> {{ articalUrl }}</el-link
-          ><br />
+          <el-link type="primary" :underline="false">
+            {{ articalUrl }}</el-link><br />
         </el-col>
         <el-col :span="10" class="iconShare">
           <span class="iconfont icon-10wechat"></span>
           <span class="iconfont icon-qq1"></span>
           <!-- <span class="iconfont icon-pengyouquan-copy"></span> -->
           <span class="iconfont icon-weibo"></span>
-          <span
-            style="font-size: 36px;"
+          <span style="font-size: 36px;"
             class="iconfont icon-tubiaozhizuomobanyihuifu-"
-            title="修改Blog"
-            @click="blogEdit"
-          ></span>
-          <span
-            style="font-size: 36px;"
-            title="删除Blog"
+            title="修改Blog" @click="blogEdit"></span>
+          <span style="font-size: 36px;" title="删除Blog"
             class="iconfont icon-46shanchu"
-            @click="blogDelete"
-          ></span>
+            @click="blogDelete"></span>
           <!-- <span class="iconfont icon-QQkongjian"></span> -->
         </el-col>
       </el-row>
     </el-card>
 
     <!-- 写留言 -->
-    <el-card class="animated zoomIn box-card writeCard">
+    <el-card
+      class="animated zoomIn box-card writeCard">
       <div class="msg-input">
-        <tinymce-editor
-          style="background-color: #ddd;"
-          ref="editor"
-          v-model="tinymceHtml"
-          :value="tinymceHtml"
-          @input="inputMsg"
-        ></tinymce-editor>
+        <tinymce-editor style="background-color: #ddd;"
+          ref="editor" v-model="tinymceHtml"
+          :value="tinymceHtml" @input="inputMsg">
+        </tinymce-editor>
       </div>
       <div class="btns">
-        <el-button
-          type="success"
-          icon="el-icon-check"
-          circle
-          :loading="btnLoading"
-          @click="submitMsg"
-        ></el-button>
-        <el-button
-          type="danger"
-          icon="el-icon-close"
-          circle
-          @click="tinymceHtml = ''"
-        ></el-button>
+        <el-button type="success" icon="el-icon-check"
+          circle :loading="btnLoading"
+          @click="submitMsg"></el-button>
+        <el-button type="danger" icon="el-icon-close"
+          circle @click="tinymceHtml = ''"></el-button>
       </div>
     </el-card>
 
     <!-- 留言列表 -->
 
-    <leave-msg v-if="isShowMsg" :msgDataList="msgDataList"></leave-msg>
+    <leave-msg v-if="isShowMsg"
+      :msgDataList="msgDataList"></leave-msg>
   </div>
 </template>
 
@@ -117,6 +109,10 @@ import { getArticalById } from "@/api/artical/artical";
 import { addMsg, getMsgById } from "@/api/msg/msg";
 import tinymceEditor from "@/components/tinymce/editor.vue";
 import LeaveMsg from "@/components/leaveMsg/LeaveMsg.vue";
+import { addCodeBtn } from "@/plugins/mavonEditor/mavon";
+
+import hljs from "highlight.js";
+import marked from "marked";
 export default {
   name: "",
   components: {
@@ -137,11 +133,16 @@ export default {
     };
   },
   created() {
-    console.log(window);
     this.articalId = this.$route.params.id;
     this.slideLight();
     this.getDataByID();
     this.getMsgList();
+  },
+  mounted() {
+    hljs.highlightCode();
+    this.$nextTick((_) => {
+      addCodeBtn();
+    });
   },
   methods: {
     ...mapActions(["setArticalAction"]),
@@ -162,9 +163,16 @@ export default {
         articalId: this.articalId,
       };
       console.log(params);
+
       getArticalById(params).then((res) => {
         if (res.meta.status == "200") {
           this.articalInfo = res.data[0];
+          this.articalInfo.articalContent = marked(
+            this.articalInfo.articalContent || "",
+            {
+              sanitize: true,
+            }
+          );
           this.articalInfo.articalDate = this.$timeService(
             this.articalInfo.articalDate
           );
@@ -176,6 +184,9 @@ export default {
           this.articalInfo.month = arrSplit[1];
           this.articalInfo.day = arrSplit[2];
           console.log(this.articalInfo);
+          this.$nextTick((_) => {
+            addCodeBtn();
+          });
         } else {
           this.$message.error("err");
         }
@@ -192,27 +203,27 @@ export default {
       });
     },
     submitMsg() {
-      if (!this.$store.state.user.userId || this.$store.state.user.userId == "")
-        return this.$notify.warning("请登录，再进行操作");
-      if (!this.tinymceHtml) return this.$notify.warning("请输入留言！");
-      let params = {
-        articalId: this.articalId,
-        msgContent: this.tinymceHtml,
-        userName: window.sessionStorage.getItem("userName"),
-        userImg:
-          "/public/updata/images/upload_c8aab80f675d6220c664a2584b8daca7.jpg",
-      };
-      this.btnLoading = true;
-      addMsg(params).then((res) => {
-        console.log(res);
-        this.btnLoading = false;
-        if (res.meta.status == "200") {
-          this.isShowMsg = false;
-          this.getMsgList();
-          this.tinymceHtml = "";
-          this.$notify.success("留言成功");
-        }
-      });
+      // if (!this.$store.state.user.userId || this.$store.state.user.userId == "")
+      //   return this.$notify.warning("请登录，再进行操作");
+      // if (!this.tinymceHtml) return this.$notify.warning("请输入留言！");
+      // let params = {
+      //   articalId: this.articalId,
+      //   msgContent: this.tinymceHtml,
+      //   userName: window.sessionStorage.getItem("userName"),
+      //   userImg:
+      //     "/public/updata/images/upload_c8aab80f675d6220c664a2584b8daca7.jpg",
+      // };
+      // this.btnLoading = true;
+      // addMsg(params).then((res) => {
+      //   console.log(res);
+      //   this.btnLoading = false;
+      //   if (res.meta.status == "200") {
+      //     this.isShowMsg = false;
+      //     this.getMsgList();
+      //     this.tinymceHtml = "";
+      //     this.$notify.success("留言成功");
+      //   }
+      // });
     },
     slideLight() {
       clearInterval(this.timer);
@@ -231,6 +242,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ArtDetail {
+  width: 75%;
+  margin: 0 auto;
+}
 .el-card {
   padding: 20px;
   margin-bottom: 15px;
@@ -330,5 +345,57 @@ export default {
   margin: 15px 5px;
   line-height: 35px;
   color: #ddd;
+}
+#content /deep/ pre.code {
+  position: relative !important;
+  border-radius: 3px !important;
+  border: 1px solid #c3ccd0 !important;
+  overflow: hidden;
+  background-color: rgb(40, 42, 54);
+  padding: 10px 0;
+  box-sizing: border-box;
+  color: #fff;
+  padding-left: 60px !important;
+  code {
+    line-height: 30px !important;
+  }
+  ol.pre-numbering {
+    position: absolute !important;
+    top: 0 !important;
+    left: 5px !important;
+    padding-top: 10px;
+    line-height: 30px;
+    list-style-type: none;
+    counter-reset: sectioncounter;
+    margin-bottom: 0;
+    li {
+      margin-top: 0 !important;
+      color: #fff;
+      &:before {
+        content: counter(sectioncounter) "";
+        counter-increment: sectioncounter;
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+        border-right: solid 1px rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+  i.code-copy {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #464d5e;
+    padding: 3px;
+    margin: 3px 3px 0 0;
+    font-size: 11px;
+    border-radius: inherit;
+    color: #f1f1f1;
+    cursor: pointer;
+    display: none;
+  }
+  &:hover i.code-copy {
+    display: block;
+  }
 }
 </style>
